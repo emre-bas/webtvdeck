@@ -1,0 +1,40 @@
+name: Bug report
+description: Something doesn't play or work as expected
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Never paste your playlist URL, stream links or provider credentials here.** IPTV links usually contain your username and password, and issues are public.
+        If a stream fails, describe it instead: its format (HLS, MPEG-TS…) and the error the app shows.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What did you do, what did you expect, and what happened instead?
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Browser and device
+      placeholder: e.g. Chrome on Android TV, Safari on iPhone
+    validations:
+      required: true
+  - type: dropdown
+    id: setup
+    attributes:
+      label: How do you run it?
+      options:
+        - Live demo (GitHub Pages)
+        - npm run dev
+        - npm start (own server)
+        - Other static hosting
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Error message or console output
+      description: Remove any URLs, usernames and passwords before pasting.
+      render: text

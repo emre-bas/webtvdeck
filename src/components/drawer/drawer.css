@@ -1,0 +1,839 @@
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: rgb(0 0 0 / 0.3);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 300ms var(--ease);
+}
+
+.scrim[data-open] {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.drawer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  width: min(440px, 100%);
+  padding-top: var(--safe-top);
+  padding-right: var(--safe-right);
+  border-left: 1px solid var(--line);
+  background: var(--panel);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(28px) saturate(1.4);
+  touch-action: pan-y;
+  transform: translateX(104%);
+  visibility: hidden;
+  transition:
+    transform 320ms var(--ease),
+    visibility 0s linear 320ms;
+}
+
+.drawer[data-open] {
+  transform: none;
+  visibility: visible;
+  transition: transform 320ms var(--ease);
+}
+
+.drawer__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 12px 12px 18px;
+}
+
+.drawer__title {
+  display: grid;
+  flex: 1;
+  min-width: 0;
+  line-height: 1.25;
+}
+
+.drawer__brand {
+  font-size: 16px;
+  font-weight: 750;
+  letter-spacing: -0.01em;
+}
+
+.drawer__playlist {
+  overflow: hidden;
+  color: var(--text-3);
+  font-size: 12.5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.drawer__tabs {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 4px;
+  padding: 0 10px 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.drawer__tab {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  min-width: 0;
+  padding: 8px 2px 7px;
+  border-radius: 12px;
+  color: var(--text-3);
+  font-size: 11.5px;
+  font-weight: 600;
+  transition:
+    background 160ms,
+    color 160ms;
+}
+
+.drawer__tab span {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.drawer__tab svg {
+  width: 21px;
+  height: 21px;
+}
+
+.drawer__tab:hover {
+  color: var(--text);
+}
+
+.drawer__tab[aria-selected='true'] {
+  background: var(--fill-2);
+  color: var(--text);
+}
+
+.drawer__tab[aria-selected='true'] svg {
+  color: var(--accent);
+}
+
+.drawer__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* Panels */
+
+.panel {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.panel--scroll {
+  gap: 14px;
+  overflow-y: auto;
+  padding: 14px 14px calc(var(--safe-bottom) + 20px);
+  scrollbar-color: rgb(255 255 255 / 0.18) transparent;
+  scrollbar-width: thin;
+}
+
+.panel--center {
+  align-items: center;
+  justify-content: center;
+}
+
+.panel__toolbar {
+  display: grid;
+  gap: 8px;
+  padding: 12px 12px 8px;
+}
+
+.panel__summary {
+  padding: 6px 6px 2px;
+  color: var(--text-3);
+  font-size: 13px;
+}
+
+.panel__footer {
+  display: flex;
+  justify-content: center;
+  padding: 10px 12px calc(var(--safe-bottom) + 12px);
+  border-top: 1px solid var(--line);
+}
+
+.panel__section {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--fill-1);
+}
+
+.panel__section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.panel__section-head h3 {
+  font-size: 15px;
+}
+
+.search {
+  position: relative;
+}
+
+.search__icon {
+  position: absolute;
+  top: 50%;
+  left: 13px;
+  width: 18px;
+  height: 18px;
+  color: var(--text-3);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.search__input {
+  height: 44px;
+  padding-right: 40px;
+  padding-left: 40px;
+}
+
+.search__input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.search__clear {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  color: var(--text-3);
+  transform: translateY(-50%);
+}
+
+.search__clear:hover {
+  background: var(--fill-2);
+  color: var(--text);
+}
+
+.search__clear svg {
+  width: 16px;
+  height: 16px;
+}
+
+.group-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 42px;
+  padding: 0 10px 0 12px;
+  border-radius: 12px;
+  background: var(--fill-1);
+  color: var(--text);
+  text-align: left;
+  transition: background 160ms;
+}
+
+.group-button:hover {
+  background: var(--fill-2);
+}
+
+.group-button svg {
+  width: 18px;
+  height: 18px;
+  color: var(--text-3);
+}
+
+.group-button > svg:first-child {
+  color: var(--accent);
+}
+
+.group-button__label {
+  flex: 1;
+  overflow: hidden;
+  font-size: 14px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.group-button__count {
+  color: var(--text-3);
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Virtual list */
+
+.vlist {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-bottom: var(--safe-bottom);
+  outline: none;
+  scrollbar-color: rgb(255 255 255 / 0.18) transparent;
+  scrollbar-width: thin;
+}
+
+.vlist__inner {
+  position: relative;
+  width: 100%;
+}
+
+.vlist__row {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 2px 8px;
+  cursor: pointer;
+}
+
+.vlist-empty {
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* Rows */
+
+.ch-row,
+.group-row {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  border-radius: 12px;
+  transition: background 120ms;
+}
+
+.ch-row {
+  gap: 12px;
+  padding: 0 6px 0 4px;
+}
+
+.vlist__row:hover > * {
+  background: var(--fill-1);
+}
+
+/* The keyboard cursor is only drawn while the list has keyboard focus. */
+.vlist:focus-visible .vlist__row[data-active] > * {
+  background: var(--fill-2);
+  box-shadow: inset 0 0 0 2px var(--accent);
+}
+
+.ch-row[data-playing] {
+  background: var(--accent-soft);
+}
+
+.vlist__row:hover > .ch-row[data-playing] {
+  background: rgb(79 227 193 / 0.18);
+}
+
+.ch-row__num {
+  width: 38px;
+  flex-shrink: 0;
+  color: var(--text-3);
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.ch-row__text {
+  display: grid;
+  flex: 1;
+  gap: 1px;
+  min-width: 0;
+}
+
+.ch-row__name {
+  overflow: hidden;
+  font-size: 15px;
+  font-weight: 550;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ch-row[data-playing] .ch-row__name,
+.ch-row[data-playing] .ch-row__num {
+  color: var(--accent);
+}
+
+.ch-row__meta {
+  overflow: hidden;
+  color: var(--text-3);
+  font-size: 12.5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ch-row__meta--programme {
+  color: var(--text-2);
+}
+
+.ch-row__progress {
+  position: relative;
+  height: 2px;
+  margin-top: 3px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: rgb(255 255 255 / 0.1);
+}
+
+.ch-row__progress::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--text-3);
+  transform: scaleX(var(--progress));
+  transform-origin: left;
+}
+
+.ch-row[data-playing] .ch-row__progress::after {
+  background: var(--accent);
+}
+
+.ch-row__playing {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  color: var(--accent);
+}
+
+.ch-row__fav {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  color: var(--text-3);
+  opacity: 0;
+  transition:
+    opacity 120ms,
+    color 120ms;
+}
+
+.ch-row__fav svg {
+  width: 18px;
+  height: 18px;
+}
+
+.vlist__row:hover .ch-row__fav,
+.ch-row__fav[data-on] {
+  opacity: 1;
+}
+
+.ch-row__fav:hover {
+  background: var(--fill-2);
+  color: var(--text);
+}
+
+.ch-row__fav[data-on] {
+  color: var(--warning);
+}
+
+/* Touch screens have no hover: keep the star reachable. */
+@media (hover: none) {
+  .ch-row__fav {
+    opacity: 0.55;
+  }
+}
+
+.group-row {
+  gap: 12px;
+  padding: 0 14px 0 12px;
+}
+
+.group-row svg {
+  width: 18px;
+  height: 18px;
+  color: var(--text-3);
+}
+
+.group-row__label {
+  flex: 1;
+  overflow: hidden;
+  font-size: 14.5px;
+  font-weight: 550;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.group-row__count {
+  color: var(--text-3);
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.group-row[data-selected] {
+  background: var(--accent-soft);
+}
+
+.group-row[data-selected] svg,
+.group-row[data-selected] .group-row__label {
+  color: var(--accent);
+}
+
+/* Playlists */
+
+.playlists {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.playlist {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: start;
+  gap: 4px;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--fill-1);
+}
+
+.playlist[data-active] {
+  border-color: rgb(79 227 193 / 0.35);
+  background: rgb(79 227 193 / 0.06);
+}
+
+.playlist__main {
+  display: flex;
+  gap: 12px;
+  min-width: 0;
+  padding: 6px;
+  border-radius: 12px;
+  text-align: left;
+}
+
+.playlist__main:not(:disabled):hover {
+  background: var(--fill-2);
+}
+
+.playlist__icon {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--fill-2);
+  color: var(--text-2);
+}
+
+.playlist[data-active] .playlist__icon {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.playlist__icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.playlist__text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.playlist__name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow: hidden;
+  font-size: 15px;
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+.playlist__meta {
+  overflow: hidden;
+  color: var(--text-3);
+  font-size: 12.5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.playlist__actions {
+  display: flex;
+}
+
+.playlist__actions .icon-btn {
+  width: 36px;
+  height: 36px;
+}
+
+.playlist__actions .icon-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Lines up with the playlist's text: the button's padding, the icon and the gap. */
+.playlist__credit {
+  grid-column: 1 / -1;
+  margin: -4px 6px 4px 58px;
+  color: var(--text-3);
+  font-size: 12px;
+}
+
+.playlist__credit a {
+  color: inherit;
+  white-space: nowrap;
+  text-decoration-color: var(--line-2);
+  text-underline-offset: 3px;
+}
+
+.playlist__credit a:hover {
+  color: var(--accent);
+  text-decoration-color: currentColor;
+}
+
+.playlist__guide {
+  display: flex;
+  grid-column: 1 / -1;
+  align-items: center;
+  gap: 10px;
+  margin: 0 6px 4px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgb(0 0 0 / 0.2);
+  font-size: 12.5px;
+}
+
+.playlist__guide svg {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  color: var(--accent);
+}
+
+.playlist__guide-status {
+  flex: 1;
+  min-width: 0;
+  color: var(--text-2);
+}
+
+.playlist__guide-status[data-error] {
+  color: var(--warning);
+}
+
+.playlist__edit {
+  display: grid;
+  grid-column: 1 / -1;
+  gap: 12px;
+  padding: 8px 6px 6px;
+}
+
+.playlist__edit .input {
+  height: 40px;
+}
+
+.playlist__edit-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.badge {
+  padding: 1px 7px;
+  border-radius: 6px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.spin {
+  animation: spin 0.9s linear infinite;
+}
+
+/* Settings */
+
+.settings__section {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--fill-1);
+}
+
+.settings__section h3 {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 14.5px;
+  font-weight: 650;
+}
+
+.settings__section h3 svg {
+  width: 18px;
+  height: 18px;
+  color: var(--accent);
+}
+
+.settings__section .btn {
+  justify-self: start;
+}
+
+.settings__info {
+  color: var(--text-2);
+  font-size: 13.5px;
+  text-wrap: pretty;
+}
+
+.settings__status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.status-dot {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--text-3);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.status-dot::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--text-3);
+}
+
+.status-dot[data-ok] {
+  color: var(--accent);
+}
+
+.status-dot[data-ok]::before {
+  background: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.settings__version {
+  color: var(--text-3);
+  font-size: 12.5px;
+}
+
+.shortcuts {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 10px 14px;
+  margin: 0;
+  font-size: 13.5px;
+}
+
+.shortcuts dt {
+  display: flex;
+  gap: 4px;
+}
+
+.shortcuts dd {
+  margin: 0;
+  color: var(--text-2);
+}
+
+kbd {
+  min-width: 26px;
+  padding: 2px 7px;
+  border: 1px solid var(--line-2);
+  border-bottom-width: 2px;
+  border-radius: 7px;
+  background: var(--fill-2);
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+}
+
+@media (max-width: 480px) {
+  .drawer {
+    border-left: 0;
+  }
+}
+
+/* See-through menu: the stream stays watchable behind it (no blur, which is also cheap for TV GPUs). */
+
+.scrim {
+  background: transparent;
+}
+
+.drawer {
+  border-left-color: rgb(255 255 255 / 0.06);
+  background: linear-gradient(to right, rgb(5 7 10 / 0.42), rgb(5 7 10 / 0.68));
+  box-shadow: none;
+  backdrop-filter: none;
+  text-shadow: 0 1px 3px rgb(0 0 0 / 0.75);
+}
+
+.drawer :is(.btn--primary, .input, .badge, kbd) {
+  text-shadow: none;
+}
+
+/* Group to the right of the channel name; the programme on air stays on the second line. */
+
+.ch-row__title {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  min-width: 0;
+}
+
+.ch-row__title .ch-row__name {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.ch-row__group {
+  flex-shrink: 0;
+  max-width: 42%;
+  overflow: hidden;
+  color: var(--text-3);
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ch-row[data-playing] .ch-row__group {
+  color: var(--text-2);
+}
+
+/* Playlist form views */
+
+.subview-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: -4px 0 -2px -6px;
+}
+
+.subview-head h3 {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.playlist__title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

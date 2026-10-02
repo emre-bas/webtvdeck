@@ -1,0 +1,137 @@
+.onboarding {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  height: 100%;
+  overflow-y: auto;
+  padding: calc(var(--safe-top) + 72px) calc(var(--safe-right) + 20px) calc(var(--safe-bottom) + 40px)
+    calc(var(--safe-left) + 20px);
+}
+
+/* Centers the content when it fits, scrolls from the top when it doesn't. */
+.onboarding > :first-child {
+  margin-top: auto;
+}
+
+.onboarding > :last-child {
+  margin-bottom: auto;
+}
+
+.onboarding__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(55% 45% at 18% 8%, rgb(79 227 193 / 0.15), transparent 70%),
+    radial-gradient(50% 45% at 88% 92%, rgb(47 180 230 / 0.13), transparent 70%),
+    var(--bg);
+}
+
+.onboarding__backdrop::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgb(255 255 255 / 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 0.03) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, #000 20%, transparent 80%);
+}
+
+.onboarding__language {
+  position: absolute;
+  top: calc(var(--safe-top) + 16px);
+  right: calc(var(--safe-right) + 16px);
+}
+
+.onboarding__language .segmented button {
+  height: 30px;
+  padding: 0 12px;
+  font-size: 12.5px;
+}
+
+.onboarding__card {
+  display: grid;
+  gap: 24px;
+  width: min(480px, 100%);
+  padding: 32px;
+  border: 1px solid var(--line);
+  border-radius: 26px;
+  background: rgb(15 17 22 / 0.78);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(20px);
+}
+
+.onboarding__brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.onboarding__wordmark {
+  font-size: 24px;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+}
+
+.onboarding__tagline {
+  color: var(--text-3);
+  font-size: 13.5px;
+}
+
+.onboarding__intro {
+  display: grid;
+  gap: 8px;
+}
+
+.onboarding__intro h1 {
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  text-wrap: balance;
+}
+
+.onboarding__intro p {
+  color: var(--text-2);
+  font-size: 14.5px;
+  text-wrap: pretty;
+}
+
+.onboarding__features {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 22px;
+  margin: 0;
+  padding: 0;
+  color: var(--text-3);
+  font-size: 13px;
+  list-style: none;
+}
+
+.onboarding__features li {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.onboarding__features svg {
+  width: 15px;
+  height: 15px;
+  color: var(--accent);
+}
+
+@media (max-width: 480px) {
+  .onboarding {
+    padding-top: calc(var(--safe-top) + 64px);
+  }
+
+  .onboarding__card {
+    padding: 24px 20px;
+    border-radius: 22px;
+  }
+}

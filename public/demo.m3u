@@ -1,0 +1,22 @@
+#EXTM3U
+# WebTVDeck demo playlist: only openly licensed films and a test signal.
+#
+# Big Buck Bunny: (c) copyright 2008, Blender Foundation / www.bigbuckbunny.org
+# Tears of Steel: (CC) Blender Foundation | mango.blender.org
+#   Both films are licensed under Creative Commons Attribution 3.0:
+#   https://creativecommons.org/licenses/by/3.0/
+#   Streamed from Mux, Unified Streaming and test-videos.co.uk.
+# Canlı Test Yayını: colour bars and a clock from Unified Streaming's public demo server.
+#
+# WebTVDeck doesn't host any of these streams. Only add streams whose license allows it,
+# and credit them here, in the README (Demo content) and in the app (PlaylistsPanel.tsx).
+#EXTINF:-1 tvg-id="usp.live" group-title="Canlı",Canlı Test Yayını
+https://demo.unified-streaming.com/k8s/live/stable/live.isml/.m3u8
+#EXTINF:-1 tvg-id="bbb" group-title="Filmler",Big Buck Bunny (çoklu kalite)
+https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8
+#EXTINF:-1 tvg-id="tos" group-title="Filmler",Tears of Steel
+https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8
+#EXTINF:-1 tvg-id="bbb-mp4" group-title="Filmler",Big Buck Bunny (MP4, 10 sn)
+https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/720/Big_Buck_Bunny_720_10s_1MB.mp4
+#EXTINF:-1 tvg-id="tos-audio" radio="true" group-title="Radyo",Tears of Steel (yalnızca ses)
+https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/tears-of-steel-audio_eng=128002.m3u8

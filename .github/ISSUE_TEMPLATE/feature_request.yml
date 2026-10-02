@@ -1,0 +1,11 @@
+name: Feature request
+description: Suggest an idea for WebTVDeck
+labels: [enhancement]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would you like?
+      description: Describe the problem it would solve. Please don't include playlist URLs or credentials.
+    validations:
+      required: true
