@@ -44,6 +44,23 @@ export function isMixedContent(url: string): boolean {
 }
 
 /**
+ * The https:// address of a plain-HTTP URL, the only way to reach it from an HTTPS page without
+ * a proxy (many servers answer on both). Null for a custom port or an IP address: those
+ * practically never serve TLS, so trying would only delay the error.
+ */
+export function httpsTwin(url: string): string | null {
+  let parsed: URL;
+  try {
+    parsed = new URL(url);
+  } catch {
+    return null;
+  }
+  if (parsed.protocol !== 'http:' || parsed.port || /^[\d.]+$|^\[/.test(parsed.hostname)) return null;
+  parsed.protocol = 'https:';
+  return parsed.href;
+}
+
+/**
  * Servers that refused direct browser access. All channels of a provider usually share a
  * host, so later requests go straight through the proxy: zapping gets faster and
  * single-connection accounts don't see a doomed extra connection first. Kept across

@@ -1,4 +1,4 @@
-import { isMixedContent, knownToNeedProxy, proxied, rememberNeedsProxy, type ProxyConfig } from '../lib/proxy';
+import { httpsTwin, isMixedContent, knownToNeedProxy, proxied, rememberNeedsProxy, type ProxyConfig } from '../lib/proxy';
 import { createEngine } from './engines';
 import { engineChain } from './stream-type';
 import type { AudioTrack, Engine, EngineCallbacks, EngineKind, PlaybackError, QualityLevel } from './types';
@@ -36,6 +36,8 @@ export interface PlayerState {
 interface Route {
   kind: EngineKind;
   viaProxy: boolean;
+  /** Where the stream loads from without the proxy: its own URL, or the https:// twin of a plain-HTTP one. */
+  directUrl: string;
 }
 
 type AttemptResult = { ok: true } | { ok: false; error: PlaybackError };
@@ -183,14 +185,16 @@ export class PlayerController {
     const needsHeaders = Boolean(source.userAgent || source.referrer || proxy.userAgent);
     let viaProxy =
       endpoint !== null && (forceProxy || proxy.mode === 'always' || mixed || needsHeaders || knownToNeedProxy(source.url));
-    if (mixed && !viaProxy) return { error: { kind: 'mixed-content' } };
+    // Without a proxy, a plain-HTTP stream can still play if its server also speaks HTTPS.
+    const directUrl = mixed && !viaProxy ? httpsTwin(source.url) : source.url;
+    if (directUrl === null) return { error: { kind: 'mixed-content' } };
 
     const chain = engineChain(source.url, (mime) => this.video.canPlayType(mime) !== '');
     const errors: PlaybackError[] = [];
 
     for (let i = 0; i < chain.length; ) {
       const kind = chain[i]!;
-      const url = viaProxy && endpoint !== null ? this.proxiedUrl(endpoint, source, proxy) : source.url;
+      const url = viaProxy && endpoint !== null ? this.proxiedUrl(endpoint, source, proxy) : directUrl;
       const result = await this.attempt(kind, url, session);
       if (session !== this.session) return { error: { kind: 'media', detail: 'superseded' } };
 
@@ -203,7 +207,7 @@ export class PlayerController {
           live: !Number.isFinite(this.video.duration),
           ...(this.video.paused ? { phase: 'paused' as const } : {}),
         });
-        return { kind, viaProxy };
+        return { kind, viaProxy, directUrl };
       }
 
       const error = normalizeError(result.error, kind, viaProxy);
@@ -218,6 +222,8 @@ export class PlayerController {
       i++;
     }
 
+    // The https:// twin failed too; the stream's own address is still the one that can't play.
+    if (mixed && !viaProxy) return { error: { kind: 'mixed-content' } };
     return { error: errors.reduce((best, error) => (rank(error) > rank(best) ? error : best)) };
   }
 
@@ -296,7 +302,7 @@ export class PlayerController {
 
     this.reconnectTimer = window.setTimeout(async () => {
       const proxy = this.getProxy();
-      const url = route.viaProxy && proxy.endpoint !== null ? this.proxiedUrl(proxy.endpoint, source, proxy) : source.url;
+      const url = route.viaProxy && proxy.endpoint !== null ? this.proxiedUrl(proxy.endpoint, source, proxy) : route.directUrl;
       const result = await this.attempt(route.kind, url, session);
       if (session === this.session && !result.ok) this.recover(normalizeError(result.error, route.kind, route.viaProxy));
     }, Math.min(1000 * 2 ** (attempt - 1), 8000));
