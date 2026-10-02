@@ -2,7 +2,7 @@
   "name": "webtvdeck",
   "productName": "WebTVDeck",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Full-screen IPTV player PWA for your own M3U playlists",
   "keywords": ["iptv", "iptv-player", "m3u", "m3u8", "hls", "epg", "xmltv", "pwa"],
   "homepage": "https://emre-bas.github.io/webtvdeck/",
